@@ -14,11 +14,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Symptom Selector"
-          component={SymptomSelectorScreen}
-          options={{ headerTitle: BuddyBanner }} 
-        />
-        <Stack.Screen name="Recommended Strains"
+        <Stack.Screen name="Find Your Strains"
           component={RecommendedStrainsScreen}
           options={{ headerTitle: BuddyBanner }} 
         />

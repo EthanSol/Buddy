@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, SafeAreaView, Text, ScrollableView } from 'react-native';
+import { SafeAreaView, Text, ScrollableView } from 'react-native';
 
-import BuddyBanner from '../components/BuddyBanner';
+import EffectSelector from '../components/EffectSelector';
+
+const symptoms = ["Pain", "Soreness", "Anxiety", "Dementia", "Insomnia", "ADHD"];
 
 const RecommendedStrainsScreen = ({navigation}) => {
     return (
-        <View>
-            <BuddyBanner />
-            <Text>Hello world</Text>
-        </View>
+        <ScrollableView>
+            <EffectSelector />
+        </ScrollableView>
     );
 }
 
