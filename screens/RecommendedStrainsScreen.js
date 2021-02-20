@@ -1,11 +1,14 @@
 import React from 'react';
-import { Text, ScrollableView } from 'react-native';
+import { View, SafeAreaView, Text, ScrollableView } from 'react-native';
+
+import BuddyBanner from '../components/BuddyBanner';
 
 const RecommendedStrainsScreen = ({navigation}) => {
     return (
-        <ScrollableView>
-            <Text>Hello from recommended screen</Text>
-        </ScrollableView>
+        <View>
+            <BuddyBanner />
+            <Text>Hello world</Text>
+        </View>
     );
 }
 

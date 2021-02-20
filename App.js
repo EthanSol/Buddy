@@ -6,6 +6,8 @@ import 'react-native-gesture-handler';
 import SymptomSelectorScreen from './screens/SymptomSelectorScreen';
 import RecommendedStrainsScreen from './screens/RecommendedStrainsScreen';
 
+import BuddyBanner from './components/BuddyBanner';
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -14,9 +16,11 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen name="Symptom Selector"
           component={SymptomSelectorScreen}
+          options={{ headerTitle: BuddyBanner }} 
         />
         <Stack.Screen name="Recommended Strains"
           component={RecommendedStrainsScreen}
+          options={{ headerTitle: BuddyBanner }} 
         />
       </Stack.Navigator>
     </NavigationContainer>
