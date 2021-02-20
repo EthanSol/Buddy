@@ -1,15 +1,40 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 
-export default function EffectSelector() {
-    const [effect, setEffect] = useState("Pain Relief");
+class EffectSelector extends Component {
+    constructor(props){
+        super(props);
+        this.passSelectedSymptoms
+        this.state = {
+            symptoms: props.symptoms,
+            selectedSymptoms: []
+        }
+    }
+
+    updateSelectedSymptoms = (items) => {
+        this.setState({selectedSymptoms: items});
+        this.passSelectedSymptoms(items);
+    }
+
+    render() {
+        return (
+            <View style={styles.container} >
+                <MultiSelect
+                    items={this.state.symptoms}
+                    uniqueKey="id"
+                    displayKey="name"
+
+                    onSelectedItemsChange={items => this.setState({selectedSymptoms: items})}
+                    selectedItems={this.state.selectedSymptoms}
+                    selectText="Pick Symptoms"
+                    searchInputPlaceholderText="Search Symptoms..."
+                    
+                />
+            </View>
+        );
+    }
     
-    return (
-        <View style={styles.container} >
-            <Text>This is the picker</Text>
-        </View>
-    )
 }
 
 const styles = StyleSheet.create({
@@ -25,4 +50,4 @@ const styles = StyleSheet.create({
 });
 
 
-//export default EffectSelector;
+export default EffectSelector;
