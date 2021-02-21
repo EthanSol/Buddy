@@ -1,25 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { View, Text, ScrollableView } from 'react-native';
+
+import { firebase } from "../firebase";
 
 import EffectSelector from '../components/EffectSelector';
 
-const testSymptoms = [
-    { id: "1", name: "Pain" },
-    { id: "2", name: "Insomnia" },
-    { id: "3", name: "Anxiety" },
-    { id: "4", name: "Soreness" },
-    { id: "5", name: "ADHD" },
-    { id: "6", name: "Dementia" }];
+const RecommendedStrainsScreen = () => {
+    // Set state
+    const [availableSymptoms, setAvailableSymptoms] = useState([]);
 
-const RecommendedStrainsScreen = ({navigation}) => {
-    const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+    useEffect(() => {
+        const symptoms = firebase.database().ref('Symptoms');
+        const setSymptoms = (symptomsJSON) => {
+            var symptoms = [];
+    
+            for (var symptom in symptomsJSON.val()){
+                symptoms.push(symptomsJSON.val()[symptom]);
+            }
+    
+            setAvailableSymptoms(symptoms);
+        }
+        symptoms.on('value', setSymptoms, error => console.log("Error" + error));
+        return () => { symptoms.off('value', setSymptoms) };
+    }, []);
 
-    // Fetch request to DB
-
+    const getFilteredStrains = (selectedStrains) => {
+        console.log(selectedStrains);
+    }
 
     return (
         <View>
-            <EffectSelector symptoms={testSymptoms} setSymptoms={setSelectedSymptoms} />
+            <EffectSelector symptoms={availableSymptoms} updateSelectedSymptoms={getFilteredStrains} />
         </View>
     );
 }

@@ -1,39 +1,54 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MultiSelect from 'react-native-multiple-select';
 
-class EffectSelector extends Component {
-    constructor(props){
-        super(props);
-        this.passSelectedSymptoms
-        this.state = {
-            symptoms: props.symptoms,
-            selectedSymptoms: []
+import { firebase } from '../firebase';
+
+const EffectSelector = ({updateSelectedSymptoms}) => {
+    const [symptoms, setSymptoms] = useState([]);
+    const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+
+    useEffect(() => {
+        const symptoms = firebase.database().ref('Symptoms');
+        const handleData = (symptomsJSON) => {
+            var symptoms = [];
+    
+            for (var symptomID in symptomsJSON.val()){
+                symptoms.push({
+                    ...symptomsJSON.val()[symptomID],
+                    id: symptomID
+                });
+            }
+    
+            setSymptoms(symptoms);
         }
+        symptoms.on('value', handleData, error => console.log("Error" + error));
+        return () => { symptoms.off('value', handleData) };
+    }, []);
+
+    const selectSymptoms = (items) => {
+        console.log("Updating");
+        setSelectedSymptoms(items);
+        updateSelectedSymptoms(items);
     }
 
-    updateSelectedSymptoms = (items) => {
-        this.setState({selectedSymptoms: items});
-        this.passSelectedSymptoms(items);
-    }
+    return (
+        <View style={styles.container} >
+            <MultiSelect
+                items={symptoms}
+                uniqueKey="id"
+                displayKey="name"
 
-    render() {
-        return (
-            <View style={styles.container} >
-                <MultiSelect
-                    items={this.state.symptoms}
-                    uniqueKey="id"
-                    displayKey="name"
-
-                    onSelectedItemsChange={items => this.setState({selectedSymptoms: items})}
-                    selectedItems={this.state.selectedSymptoms}
-                    selectText="Pick Symptoms"
-                    searchInputPlaceholderText="Search Symptoms..."
-                    
-                />
-            </View>
-        );
-    }
+                onSelectedItemsChange={items => selectSymptoms(items)}
+                selectedItems={selectedSymptoms}
+                selectText=" Pick Symptoms"
+                searchInputPlaceholderText="Search Symptoms..."
+                submitButtonText="Search"
+                submitButtonColor="green"
+            />
+        </View>
+    );
     
 }
 
