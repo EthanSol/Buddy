@@ -5,32 +5,40 @@ import { firebase } from "../firebase";
 
 import EffectSelector from '../components/EffectSelector';
 
+var availableStrains = [];
+    
+const JSONToArray = (data) => {
+    for (var strainID in data.val()){
+        availableStrains.push({
+            ...data.val()[strainID],
+            id: strainID
+        });
+    }
+    console.log("Getting all strains");
+}
+
+firebase.database().ref("Strains").once("value", JSONToArray);
+
 const RecommendedStrainsScreen = () => {
     // Set state
-    const [availableSymptoms, setAvailableSymptoms] = useState([]);
-
-    useEffect(() => {
-        const symptoms = firebase.database().ref('Symptoms');
-        const setSymptoms = (symptomsJSON) => {
-            var symptoms = [];
+    const [recommendedStrains, setRecommendedStrains] = useState([]);
     
-            for (var symptom in symptomsJSON.val()){
-                symptoms.push(symptomsJSON.val()[symptom]);
-            }
-    
-            setAvailableSymptoms(symptoms);
-        }
-        symptoms.on('value', setSymptoms, error => console.log("Error" + error));
-        return () => { symptoms.off('value', setSymptoms) };
-    }, []);
+    const getFilteredStrains = (selectedSymptoms) => {
+        console.log("Filtering Strains");
+        console.log(selectedSymptoms);
+        console.log(availableStrains);
+        var strains = availableStrains;
 
-    const getFilteredStrains = (selectedStrains) => {
-        console.log(selectedStrains);
+        strains = strains.filter(strain => 
+            selectedSymptoms.every(symptom =>
+                strain.symptomIDs.some(symptomID => symptom == symptomID)));
+        console.log(strains);
+        setRecommendedStrains(strains);
     }
 
     return (
         <View>
-            <EffectSelector symptoms={availableSymptoms} updateSelectedSymptoms={getFilteredStrains} />
+            <EffectSelector updateSelectedSymptoms={getFilteredStrains} />
         </View>
     );
 }
