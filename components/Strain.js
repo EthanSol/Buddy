@@ -17,31 +17,31 @@ const Strain = ({strain}) => {
 const styles = StyleSheet.create({
     strainView:{
         flex: 1,
-        borderRadius: 5,
+        borderRadius: 3,
+        borderWidth: 2,
+        borderColor: "green",
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 10,
+        margin: 5,
         height: 60,
-        padding: 10,
+        padding: 5,
         minWidth: 90,
         maxWidth: 90,
-
-        backgroundColor: '#66b0ff',
     },
     strainText: {
-        color: '#fff',
+        color: 'green',
         fontSize: 12,
         textAlign: 'center',
     },
     strainTextName: {
-        color: '#fff',
+        color: 'green',
         fontSize: 12,
         textAlign: 'center',
         fontWeight: "500",
 
     },
     strainTextType: {
-        color: '#fff',
+        color: 'green',
         fontSize: 12,
         textAlign: 'center',
         

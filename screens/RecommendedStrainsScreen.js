@@ -5,31 +5,36 @@ import { firebase } from "../firebase";
 
 import EffectSelector from '../components/EffectSelector';
 import Strain from '../components/Strain';
-import styles from 'react-native-multiple-select/lib/styles';
 import { StyleSheet, } from 'react-native';
-
-var availableStrains = [];
-    
-const JSONToArray = (data) => {
-    for (var strainID in data.val()){
-        availableStrains.push({
-            ...data.val()[strainID],
-            id: strainID
-        });
-    }
-    console.log("Getting all strains");
-}
-
-firebase.database().ref("Strains").once("value", JSONToArray);
 
 const RecommendedStrainsScreen = () => {
     // Set state
-    const [recommendedStrains, setRecommendedStrains] = useState(availableStrains);
+    const [recommendedStrains, setRecommendedStrains] = useState([]);
+    const [availableStrains, setAvailableStrains] = useState([]);
     
+    useEffect(() => {
+        //Get the available strains
+        const strains = firebase.database().ref("Strains");
+
+        const JSONToArray = (data) => {
+            var allStrains = [];
+
+            for (var strainID in data.val()){
+                allStrains.push({
+                    ...data.val()[strainID],
+                    id: strainID
+                });
+            }
+            console.log("Getting all strains");
+            setAvailableStrains(allStrains);
+            setRecommendedStrains(allStrains);
+        }
+    
+        strains.on("value", JSONToArray, error => console.log("Error" + error));
+        return () => { strains.off("value", JSONToArray) }
+    }, []);
+
     const getFilteredStrains = (selectedSymptoms) => {
-        console.log("Filtering Strains");
-        console.log(selectedSymptoms);
-        console.log(availableStrains);
         var strains = availableStrains;
 
         if(selectedSymptoms.length == 0){ 
