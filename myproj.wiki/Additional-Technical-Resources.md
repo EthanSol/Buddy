@@ -1,0 +1,1 @@
+Put in this section any tools you are planning to use to test; as well as how to run them  (e.g. PHPunit, Jasmine, Jest, CURL, cypress or ?). If you are using these tools; create a section and enumerate what’s expected for people who write code.
