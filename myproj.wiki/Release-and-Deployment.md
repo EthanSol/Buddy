@@ -1,1 +1,3 @@
-How is the code released / published.  The walking skeleton should be deployed in some way.  Describe how someone on the team goes through the process of deploying, even if it’s as simple as saying `npm run go-public’.
+Assuming the code is tested and approved for deployment, run the following commands in terminal:
+expo build:web
+firebase deploy
